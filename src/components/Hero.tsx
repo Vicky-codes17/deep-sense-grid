@@ -25,14 +25,13 @@ const Hero = ({ onStart }: HeroProps) => {
         ))}
       </div>
 
-      {/* Glow effect */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px]" />
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px]" />
 
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <div className="mb-8 inline-flex items-center gap-3">
           <Waves className="w-16 h-16 text-primary animate-pulse" />
-          <h1 className="text-7xl font-bold font-poppins glow-text">
+          <h1 className="text-7xl font-bold font-poppins">
             Smart Aquaculture
           </h1>
         </div>
@@ -62,7 +61,7 @@ const Hero = ({ onStart }: HeroProps) => {
           {[
             { label: "Real-Time Monitoring", value: "24/7" },
             { label: "Data Points", value: "1000+" },
-            { label: "Accuracy", value: "99.8%" },
+            { label: "Accuracy", value: "96.8%" },
           ].map((stat, i) => (
             <div key={i} className="glass-card p-6 rounded-xl">
               <div className="text-3xl font-bold text-primary mb-2 font-poppins">

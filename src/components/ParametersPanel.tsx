@@ -86,22 +86,27 @@ const ParametersPanel = ({ tanks, selectedTankId, onSelectTank }: ParametersPane
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="glass-card border-primary/30">
-            {tanks.map((tank) => (
+            {tanks.slice(0, 50).map((tank) => (
               <SelectItem key={tank.id} value={tank.id}>
-                {tank.name}
+                {tank.name || tank.id}
+                <span className="text-xs text-muted-foreground ml-2">· {tank.fishCount ?? "n/a"} fish</span>
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
         <div className="mt-3 text-sm text-muted-foreground">
-          <div>Species: <span className="text-foreground">{selectedTank.species}</span></div>
+          <div>Tank: <span className="text-foreground">{selectedTank.name ?? selectedTank.id}</span></div>
           <div>Fish Count: <span className="text-foreground">{selectedTank.fishCount}</span></div>
+          <div>Avg Weight: <span className="text-foreground">{selectedTank.avgWeight} g</span></div>
+          <div>Feed Amount: <span className="text-foreground">{(selectedTank as any).feedAmount ?? '—'} g/day</span></div>
+          <div>Growth Rate: <span className="text-foreground">{((selectedTank as any).growthRate != null) ? `${(selectedTank as any).growthRate}%` : '—'}</span></div>
+          <div>Status: <span className="text-foreground">{((selectedTank as any).healthStatus) ?? '—'}</span></div>
         </div>
       </div>
 
       {/* Live Parameters */}
       <div className="space-y-3">
-        <h3 className="text-lg font-semibold font-poppins glow-text">Live Parameters</h3>
+  <h3 className="text-lg font-semibold font-poppins">Live Parameters</h3>
         {parameters.map((param, i) => (
           <div
             key={i}

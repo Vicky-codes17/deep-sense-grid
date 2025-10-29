@@ -10,6 +10,10 @@ export interface TankData {
   feedRate: number;
   fishCount: number;
   avgWeight: number;
+  // optional fields present in sample data
+  feedAmount?: number;
+  growthRate?: number;
+  healthStatus?: string;
   optimalTemp: number;
   optimalPH: number;
   minOxygen: number;

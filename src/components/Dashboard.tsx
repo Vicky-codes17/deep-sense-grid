@@ -16,50 +16,64 @@ interface DashboardProps {
 
 const Dashboard = ({ tanks, isRunning, onPause, onReset, onExport }: DashboardProps) => {
   const [selectedTankId, setSelectedTankId] = useState<string>(tanks[0]?.id || "");
-  const [timeSeriesData, setTimeSeriesData] = useState<{
+  // keep per-tank time series so switching tanks preserves their history
+  const [timeSeriesByTank, setTimeSeriesByTank] = useState<Record<string, {
     temperature: DataPoint[];
     pH: DataPoint[];
     oxygen: DataPoint[];
-  }>({
-    temperature: [],
-    pH: [],
-    oxygen: [],
-  });
+  }>>({});
   const [insights, setInsights] = useState<Insight[]>([]);
 
   const selectedTank = tanks.find(t => t.id === selectedTankId) || tanks[0];
 
+  // when tanks list changes, ensure we have entries for them (preserve existing history)
   useEffect(() => {
-    if (!selectedTank) return;
-
     const now = Date.now();
-    setTimeSeriesData({
-      temperature: [{ time: now, value: selectedTank.temperature }],
-      pH: [{ time: now, value: selectedTank.pH }],
-      oxygen: [{ time: now, value: selectedTank.oxygen }],
+    setTimeSeriesByTank(prev => {
+      const next = { ...prev };
+      tanks.forEach(t => {
+        if (!next[t.id]) {
+          next[t.id] = {
+            temperature: [{ time: now, value: t.temperature }],
+            pH: [{ time: now, value: t.pH }],
+            oxygen: [{ time: now, value: t.oxygen }],
+          };
+        }
+      });
+      return next;
     });
 
-    // Generate initial insights
-    updateInsights(selectedTank);
-  }, [selectedTankId]);
+    // Generate initial insights for currently selected tank
+    if (selectedTank) updateInsights(selectedTank);
+  }, [tanks, selectedTankId]);
 
   useEffect(() => {
-    if (!isRunning || !selectedTank) return;
+    if (!isRunning) return;
 
     const interval = setInterval(() => {
       const now = Date.now();
-      
-      setTimeSeriesData(prev => ({
-        temperature: [...prev.temperature.slice(-29), { time: now, value: selectedTank.temperature }],
-        pH: [...prev.pH.slice(-29), { time: now, value: selectedTank.pH }],
-        oxygen: [...prev.oxygen.slice(-29), { time: now, value: selectedTank.oxygen }],
-      }));
 
-      updateInsights(selectedTank);
+      // Append each tank's current measurements to its history
+      setTimeSeriesByTank(prev => {
+        const next: typeof prev = { ...prev };
+        tanks.forEach(t => {
+          const existing = next[t.id] || { temperature: [], pH: [], oxygen: [] };
+          next[t.id] = {
+            temperature: [...(existing.temperature || []).slice(-29), { time: now, value: t.temperature }],
+            pH: [...(existing.pH || []).slice(-29), { time: now, value: t.pH }],
+            oxygen: [...(existing.oxygen || []).slice(-29), { time: now, value: t.oxygen }],
+          };
+        });
+        return next;
+      });
+
+      // update insights for currently selected tank id
+      const tankNow = tanks.find(tt => tt.id === selectedTankId) || tanks[0];
+      if (tankNow) updateInsights(tankNow);
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [isRunning, selectedTank]);
+  }, [isRunning, tanks, selectedTankId]);
 
   const updateInsights = (tank: TankData) => {
     const newInsights: Insight[] = [];
@@ -142,13 +156,13 @@ const Dashboard = ({ tanks, isRunning, onPause, onReset, onExport }: DashboardPr
 
         {/* Center Panel - Graphs */}
         <div className="lg:col-span-6 space-y-4">
-          <GraphsPanel
-            temperatureData={timeSeriesData.temperature}
-            pHData={timeSeriesData.pH}
-            oxygenData={timeSeriesData.oxygen}
-            tank={selectedTank}
-            isRunning={isRunning}
-          />
+            <GraphsPanel
+              temperatureData={timeSeriesByTank[selectedTank?.id || ""]?.temperature || [{ time: Date.now(), value: selectedTank?.temperature ?? 0 }]}
+              pHData={timeSeriesByTank[selectedTank?.id || ""]?.pH || [{ time: Date.now(), value: selectedTank?.pH ?? 0 }]}
+              oxygenData={timeSeriesByTank[selectedTank?.id || ""]?.oxygen || [{ time: Date.now(), value: selectedTank?.oxygen ?? 0 }]}
+              tank={selectedTank}
+              isRunning={isRunning}
+            />
         </div>
 
         {/* Right Panel - Controls */}

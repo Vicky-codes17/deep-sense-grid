@@ -35,10 +35,10 @@ const GraphsPanel = ({ temperatureData, pHData, oxygenData, tank, isRunning }: G
     margin: { top: 10, right: 10, left: -20, bottom: 0 },
   };
 
-  if (!isRunning && temperatureData.length === 0) {
+    if (!isRunning && temperatureData.length === 0) {
     return (
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold font-poppins glow-text flex items-center gap-2">
+        <h3 className="text-lg font-semibold font-poppins flex items-center gap-2">
           <Activity className="w-5 h-5" />
           Real-Time Monitoring
         </h3>
@@ -53,7 +53,7 @@ const GraphsPanel = ({ temperatureData, pHData, oxygenData, tank, isRunning }: G
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold font-poppins glow-text flex items-center gap-2">
+      <h3 className="text-lg font-semibold font-poppins flex items-center gap-2">
         <Activity className="w-5 h-5 animate-pulse" />
         Real-Time Monitoring
       </h3>
@@ -98,6 +98,15 @@ const GraphsPanel = ({ temperatureData, pHData, oxygenData, tank, isRunning }: G
             />
           </AreaChart>
         </ResponsiveContainer>
+        {/* Quick debug: show last 5 temperature points to help verify series */}
+        <div className="mt-3 text-xs text-muted-foreground">
+          <div className="font-medium mb-1">Last values:</div>
+          <div className="grid grid-cols-4 gap-2">
+            {temperatureData.slice(-5).map((d) => (
+              <div key={d.time} className="text-right">{d.value.toFixed ? d.value.toFixed(1) : d.value}</div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* pH Chart */}
@@ -140,6 +149,15 @@ const GraphsPanel = ({ temperatureData, pHData, oxygenData, tank, isRunning }: G
             />
           </AreaChart>
         </ResponsiveContainer>
+        {/* Quick debug: show last 5 pH points */}
+        <div className="mt-3 text-xs text-muted-foreground">
+          <div className="font-medium mb-1">Last values:</div>
+          <div className="grid grid-cols-5 gap-2">
+            {pHData.slice(-5).map((d) => (
+              <div key={d.time} className="text-right">{d.value.toFixed ? d.value.toFixed(2) : d.value}</div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Oxygen Chart */}
@@ -182,6 +200,15 @@ const GraphsPanel = ({ temperatureData, pHData, oxygenData, tank, isRunning }: G
             />
           </AreaChart>
         </ResponsiveContainer>
+        {/* Quick debug: show last 5 oxygen points */}
+        <div className="mt-3 text-xs text-muted-foreground">
+          <div className="font-medium mb-1">Last values:</div>
+          <div className="grid grid-cols-5 gap-2">
+            {oxygenData.slice(-5).map((d) => (
+              <div key={d.time} className="text-right">{d.value.toFixed ? d.value.toFixed(2) : d.value}</div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

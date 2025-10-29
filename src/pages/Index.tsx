@@ -60,10 +60,40 @@ const Index = () => {
   };
 
   const handleStart = () => {
+    // Normalize incoming sample data to the TankData shape expected by the app
+    const normalizedTanks: TankData[] = (sampleData.tanks as any[]).map((t) => {
+      const feedAmount = typeof t.feedAmount === 'number' ? t.feedAmount : (t.feedAmount_g_day || 0);
+      // derive a feedRate percentage for simulation purposes (simple heuristic)
+      const feedRate = Math.min(100, Math.max(0, Math.round((feedAmount / 250) * 100)));
+
+      return {
+        id: t.id || String(Math.random()),
+        name: t.name || t.id || "Tank",
+        species: t.species || "Mixed",
+        temperature: typeof t.temperature === "number" ? t.temperature : 27,
+        pH: typeof t.pH === "number" ? t.pH : 7,
+        oxygen: typeof t.oxygen === "number" ? t.oxygen : 6,
+        ammonia: typeof t.ammonia === "number" ? t.ammonia : 0.02,
+        // propagate optional fields present in sample data
+        feedAmount: typeof feedAmount === 'number' && feedAmount > 0 ? feedAmount : undefined,
+        growthRate: typeof t.growthRate === 'number' ? t.growthRate : undefined,
+        healthStatus: t.healthStatus || undefined,
+        feedCycle: "Manual",
+        feedRate,
+        fishCount: typeof t.fishCount === "number" ? t.fishCount : 100,
+        avgWeight: typeof t.avgWeight === "number" ? t.avgWeight : 50,
+        // sensible defaults for 'optimal' values so simulation logic keeps numbers in-range
+        optimalTemp: typeof t.temperature === "number" ? t.temperature : 27,
+        optimalPH: typeof t.pH === "number" ? t.pH : 7,
+        minOxygen: 5,
+        maxAmmonia: 0.05,
+      } as TankData;
+    });
+
     setSimulationState({
       isRunning: true,
       startTime: Date.now(),
-      tanks: sampleData.tanks as TankData[],
+      tanks: normalizedTanks,
     });
     toast({
       title: "Simulation Started",
