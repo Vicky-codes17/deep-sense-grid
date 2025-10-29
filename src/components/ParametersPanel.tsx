@@ -86,7 +86,7 @@ const ParametersPanel = ({ tanks, selectedTankId, onSelectTank }: ParametersPane
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="glass-card border-primary/30">
-            {tanks.slice(0, 50).map((tank) => (
+            {tanks.slice(0, 8).map((tank) => (
               <SelectItem key={tank.id} value={tank.id}>
                 {tank.name || tank.id}
                 <span className="text-xs text-muted-foreground ml-2">· {tank.fishCount ?? "n/a"} fish</span>

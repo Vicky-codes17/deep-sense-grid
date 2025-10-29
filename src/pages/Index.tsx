@@ -61,18 +61,36 @@ const Index = () => {
 
   const handleStart = () => {
     // Normalize incoming sample data to the TankData shape expected by the app
-    const normalizedTanks: TankData[] = (sampleData.tanks as any[]).map((t) => {
+    // Only take the first 8 tanks for the simulation and ensure each has distinct initial metrics
+    const desiredCount = Math.min(8, (sampleData.tanks as any[]).length);
+    const chosen = (sampleData.tanks as any[]).slice(0, desiredCount);
+    const normalizedTanks: TankData[] = chosen.map((t, idx) => {
+      const center = (desiredCount - 1) / 2;
+      const tempOffset = (idx - center) * 0.4; // spread temps by ~0.4°C per index
+      const pHOffset = (idx - center) * 0.12; // spread pH by ~0.12 per index
+      const oxygenOffset = (idx - center) * 0.25; // spread oxygen by ~0.25 mg/L per index
+
       const feedAmount = typeof t.feedAmount === 'number' ? t.feedAmount : (t.feedAmount_g_day || 0);
       // derive a feedRate percentage for simulation purposes (simple heuristic)
       const feedRate = Math.min(100, Math.max(0, Math.round((feedAmount / 250) * 100)));
+      // helper to clamp a value
+      const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
+
+      const baseTemp = typeof t.temperature === "number" ? t.temperature : 27;
+      const basePH = typeof t.pH === "number" ? t.pH : 7;
+      const baseOxy = typeof t.oxygen === "number" ? t.oxygen : 6;
+
+      const temperature = clamp(baseTemp + tempOffset, (typeof t.temperature === 'number' ? t.temperature : 27) - 5, (typeof t.temperature === 'number' ? t.temperature : 27) + 5);
+      const pH = clamp(parseFloat((basePH + pHOffset).toFixed(2)), (typeof t.pH === 'number' ? t.pH : 7) - 1, (typeof t.pH === 'number' ? t.pH : 7) + 1);
+      const oxygen = clamp(parseFloat((baseOxy + oxygenOffset).toFixed(2)), 0, 10);
 
       return {
         id: t.id || String(Math.random()),
         name: t.name || t.id || "Tank",
         species: t.species || "Mixed",
-        temperature: typeof t.temperature === "number" ? t.temperature : 27,
-        pH: typeof t.pH === "number" ? t.pH : 7,
-        oxygen: typeof t.oxygen === "number" ? t.oxygen : 6,
+        temperature,
+        pH,
+        oxygen,
         ammonia: typeof t.ammonia === "number" ? t.ammonia : 0.02,
         // propagate optional fields present in sample data
         feedAmount: typeof feedAmount === 'number' && feedAmount > 0 ? feedAmount : undefined,
