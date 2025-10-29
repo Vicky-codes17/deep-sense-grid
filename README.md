@@ -26,12 +26,30 @@ npm run dev
 - TypeScript
 - React
 - shadcn-ui
-- Tailwind CSS
+# deep-sense-grid
 
-## Deployment
+Simple local dashboard for simulated aquaculture monitoring (temperature, pH, dissolved oxygen, etc.).
 
-Build the app for production with `npm run build` and deploy using your preferred hosting provider.
+Quick start
 
-## Notes
+1. Install dependencies
 
-This repo previously contained references to third-party scaffolding tooling. Those branding references have been removed for clarity. If you used automated tooling that added platform-specific integrations, you may need to reconfigure them manually.
+```bash
+npm install
+```
+
+2. Start dev server
+
+```bash
+npm run dev
+```
+
+What it contains
+
+- `src/` — React + TypeScript app
+- `src/data/sampleData.json` — sample tank dataset
+- `src/components/` — UI (parameters, graphs, controls)
+
+That's it — open the app in the browser and click a tank to see its readings over time.
+
+If you want more help running or modifying the app, tell me what OS/Node version you're using and I can give exact commands.
