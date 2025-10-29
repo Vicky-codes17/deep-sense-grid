@@ -1,0 +1,72 @@
+{
+  "tanks": [
+    {
+      "id": "tank-1",
+      "name": "Tilapia Tank A",
+      "species": "Tilapia",
+      "temperature": 28.5,
+      "pH": 7.2,
+      "oxygen": 6.5,
+      "ammonia": 0.15,
+      "feedCycle": "Auto",
+      "feedRate": 100,
+      "fishCount": 250,
+      "avgWeight": 450,
+      "optimalTemp": 28,
+      "optimalPH": 7.0,
+      "minOxygen": 5.0,
+      "maxAmmonia": 0.5
+    },
+    {
+      "id": "tank-2",
+      "name": "Salmon Tank B",
+      "species": "Salmon",
+      "temperature": 14.2,
+      "pH": 7.5,
+      "oxygen": 7.8,
+      "ammonia": 0.08,
+      "feedCycle": "Auto",
+      "feedRate": 120,
+      "fishCount": 180,
+      "avgWeight": 1200,
+      "optimalTemp": 14,
+      "optimalPH": 7.5,
+      "minOxygen": 6.5,
+      "maxAmmonia": 0.3
+    },
+    {
+      "id": "tank-3",
+      "name": "Shrimp Tank C",
+      "species": "Shrimp",
+      "temperature": 26.8,
+      "pH": 8.1,
+      "oxygen": 5.2,
+      "ammonia": 0.22,
+      "feedCycle": "Manual",
+      "feedRate": 80,
+      "fishCount": 500,
+      "avgWeight": 25,
+      "optimalTemp": 27,
+      "optimalPH": 8.0,
+      "minOxygen": 4.5,
+      "maxAmmonia": 0.4
+    },
+    {
+      "id": "tank-4",
+      "name": "Catfish Tank D",
+      "species": "Catfish",
+      "temperature": 27.3,
+      "pH": 6.8,
+      "oxygen": 5.8,
+      "ammonia": 0.18,
+      "feedCycle": "Auto",
+      "feedRate": 95,
+      "fishCount": 200,
+      "avgWeight": 800,
+      "optimalTemp": 27,
+      "optimalPH": 7.0,
+      "minOxygen": 5.0,
+      "maxAmmonia": 0.45
+    }
+  ]
+}
