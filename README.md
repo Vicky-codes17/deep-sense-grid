@@ -10,8 +10,8 @@ Quick start:
 
 ```sh
 # Clone the repository
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
+git clone [<YOUR_GIT_URL>](https://github.com/Vicky-codes17/deep-sense-grid.git)
+cd deep-sense-grid
 
 # Install dependencies
 npm install
