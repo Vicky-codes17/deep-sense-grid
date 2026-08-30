@@ -50,6 +50,6 @@ What it contains
 - `src/data/sampleData.json` — sample tank dataset
 - `src/components/` — UI (parameters, graphs, controls)
 
-That's it — open the app in the browser and click a tank to see its readings over time.
+That's it - open the app in the browser and click a tank to see its readings over time.
 
 If you want more help running or modifying the app, tell me what OS/Node version you're using and I can give exact commands.
