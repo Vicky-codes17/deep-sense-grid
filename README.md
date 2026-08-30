@@ -10,7 +10,7 @@ Quick start:
 
 ```sh
 # Clone the repository
-git clone [<YOUR_GIT_URL>](https://github.com/Vicky-codes17/deep-sense-grid.git)
+git clone https://github.com/Vicky-codes17/deep-sense-grid
 cd deep-sense-grid
 
 # Install dependencies
