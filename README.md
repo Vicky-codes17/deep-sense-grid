@@ -46,9 +46,9 @@ npm run dev
 
 What it contains
 
-- `src/` — React + TypeScript app
-- `src/data/sampleData.json` — sample tank dataset
-- `src/components/` — UI (parameters, graphs, controls)
+- `src/` - React + TypeScript app
+- `src/data/sampleData.json` - sample tank dataset
+- `src/components/` - UI (parameters, graphs, controls)
 
 That's it - open the app in the browser and click a tank to see its readings over time.
 
